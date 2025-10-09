@@ -1,4 +1,5 @@
 # Proyecto Innotech
+![Logotipo del Club InnoTech](https://github.com/DiegoMP06/innotech-app/blob/main/public/logo.webp)
 
 Este Proyecto tiene como meta ser el primer sistema de administración, control y desarrollo del Club Innotech. La meta principal del Club es ayudar a los compañeros de nuestra y otras carreras, con actividades que aporten un poco de nuestra ayuda como el unico club hasta ahora de la carrera de  __Tecnologías de la Información e innovación Digital__.
 
@@ -10,13 +11,12 @@ Este Proyecto tiene como meta ser el primer sistema de administración, control 
 * __Autenticación ✔️:__ Se planea una autenticación robusta sin vulnerabilidades y que cuente con las medidas de seguridad necesarias. En este caso se cuenta con la libreria de Laravel Fortify quienes ya nos brindan un ___Kit de Inicio___.
 * __Administracion de Proyectos__ ✖️:
 
-
 ## Roles
 
 > [!NOTE]
 > La aplicación va a contar con 3 roles quienes serian nuestros usuarios finales
 
-* __Administrador 🔧:__
+* __Administrador 🔧:__ 
 * __Miembro 👱:__
 * __Alumno 👨‍🎓:__
 
