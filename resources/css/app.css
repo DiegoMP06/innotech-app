@@ -1,0 +1,149 @@
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+    --color-tech-50: #fff5ec;
+    --color-tech-100: #ffe9d4;
+    --color-tech-200: #ffcea7;
+    --color-tech-300: #ffac6f;
+    --color-tech-400: #ff7d36;
+    --color-tech-500: #ff5a0e;
+    --color-tech-600: #f23f04;
+    --color-tech-700: #c82b06;
+    --color-tech-800: #a6250e;
+    --color-tech-900: #80200e;
+    --color-tech-950: #450d05;
+
+    --color-inn-50: #fbf9f1;
+    --color-inn-100: #f6f0de;
+    --color-inn-200: #ebdebd;
+    --color-inn-300: #dec793;
+    --color-inn-400: #d3af71;
+    --color-inn-500: #c69349;
+    --color-inn-600: #b87e3e;
+    --color-inn-700: #996435;
+    --color-inn-800: #7b5031;
+    --color-inn-900: #64442a;
+    --color-inn-950: #352215;
+
+    --color-background: var(--color-neutral-100);
+    --color-foreground: var(--color-neutral-600);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--color-white);
+    --color-popover-foreground: var(--color-gray-600);
+
+    --color-primary: var(--color-tech-700);
+    --color-primary-foreground: var(--color-white);
+
+    --color-secondary: var(--color-inn-700);
+    --color-secondary-foreground: var(--color-white);
+
+    --color-muted: var(--color-neutral-100);
+    --color-muted-foreground: var(--color-neutral-400);
+
+    --color-accent: var(--color-neutral-200);
+    --color-accent-foreground: var(--color-neutral-500);
+
+    --color-destructive: var(--color-red-700);
+    --color-destructive-foreground: var(--color-red-400);
+
+    --color-border: var(--color-neutral-300);
+    --color-input: var(--color-neutral-300);
+    --color-ring: var(--color-tech-600);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--color-inn-50);
+    --color-sidebar-foreground: var(--color-inn-700);
+    --color-sidebar-primary: var(--color-inn-700);
+    --color-sidebar-primary-foreground: var(--color-inn-100);
+    --color-sidebar-accent: var(--color-inn-100);
+    --color-sidebar-accent-foreground: var(--color-inn-700);
+    --color-sidebar-border: var(--color-inn-400);
+    --color-sidebar-ring: var(--color-neutral-700);
+}
+
+:root {
+
+
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+
+    --input: oklch(0.922 0 0);
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+}
+
+.dark {
+    --color-background: var(--color-neutral-900);
+    --color-foreground: var(--color-neutral-100);
+
+    --card: oklch(0.145 0 0);
+    --card-foreground: oklch(0.985 0 0);
+
+    --color-popover: var(--color-neutral-950);
+    --color-popover-foreground: var(--color-neutral-200);
+
+    --color-primary: var(--color-tech-100);
+    --color-primary-foreground: var(--color-tech-900);
+
+    --color-secondary: var(--color-inn-100);
+    --color-secondary-foreground: var(--color-inn-900);
+
+    --color-muted: var(--color-neutral-500);
+    --color-muted-foreground: var(--color-neutral-300);
+
+    --color-accent: var(--color-neutral-800);
+    --color-accent-foreground: var(--color-neutral-200);
+
+    --color-destructive: var(--color-red-500);
+    --color-destructive-foreground: var(--color-red-100);
+
+    --color-border: var(--color-neutral-600);
+    --color-input: var(--color-neutral-600);
+    --color-ring: var(--color-tech-100);
+
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+
+    --color-sidebar: var(--color-neutral-950);
+    --color-sidebar-foreground: var(--color-neutral-200);
+    --color-sidebar-primary: var(--color-neutral-50);
+    --color-sidebar-primary-foreground: var(--color-neutral-700);
+    --color-sidebar-accent: var(--color-neutral-900);
+    --color-sidebar-accent-foreground: var(--color-neutral-200);
+    --color-sidebar-border: var(--color-neutral-600);
+    --color-sidebar-ring: var(--color-tech-100);
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
