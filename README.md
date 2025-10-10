@@ -10,6 +10,7 @@ Este Proyecto tiene como meta ser el primer sistema de administración, control 
 
 * __Autenticación ✔️:__ Se planea una autenticación robusta sin vulnerabilidades y que cuente con las medidas de seguridad necesarias. En este caso se cuenta con la libreria de Laravel Fortify quienes ya nos brindan un ___Kit de Inicio___.
 * __Administracion de Proyectos__ ✖️:
+* ____
 
 ## Roles
 
