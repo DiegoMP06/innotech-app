@@ -167,6 +167,7 @@ return [
         'available'                => 'disponible',
         'birthday'                 => 'cumpleaños',
         'body'                     => 'contenido',
+        'categories'               => 'categorías',
         'city'                     => 'ciudad',
         'company'                  => 'compañía',
         'compilation'              => 'compilación',

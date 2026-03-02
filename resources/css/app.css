@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 @plugin 'tailwindcss-animate';
+@plugin '@tailwindcss/typography';
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -45,7 +46,7 @@
     --color-primary-foreground: var(--color-white);
 
     --color-secondary: var(--color-inn-700);
-    --color-secondary-foreground: var(--color-white);
+    --color-secondary-foreground: var(--color-inn-100);
 
     --color-muted: var(--color-neutral-100);
     --color-muted-foreground: var(--color-neutral-400);
@@ -54,7 +55,7 @@
     --color-accent-foreground: var(--color-neutral-500);
 
     --color-destructive: var(--color-red-700);
-    --color-destructive-foreground: var(--color-red-400);
+    --color-destructive-foreground: var(--color-red-200);
 
     --color-border: var(--color-neutral-300);
     --color-input: var(--color-neutral-300);
@@ -77,8 +78,6 @@
 }
 
 :root {
-
-
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.145 0 0);
 
@@ -109,11 +108,11 @@
     --color-secondary: var(--color-inn-100);
     --color-secondary-foreground: var(--color-inn-900);
 
-    --color-muted: var(--color-neutral-500);
-    --color-muted-foreground: var(--color-neutral-300);
+    --color-muted: var(--color-neutral-600);
+    --color-muted-foreground: var(--color-neutral-200);
 
     --color-accent: var(--color-neutral-800);
-    --color-accent-foreground: var(--color-neutral-200);
+    --color-accent-foreground: var(--color-neutral-400);
 
     --color-destructive: var(--color-red-500);
     --color-destructive-foreground: var(--color-red-100);
@@ -146,4 +145,8 @@
     body {
         @apply bg-background text-foreground;
     }
+}
+
+.react-datepicker__input-container input {
+    @apply border-input file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground flex w-full min-w-0 rounded border bg-transparent px-4 py-2 shadow-xs outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive;
 }

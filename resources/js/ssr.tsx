@@ -1,9 +1,12 @@
 import { createInertiaApp } from '@inertiajs/react';
 import createServer from '@inertiajs/react/server';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import ReactDOMServer from 'react-dom/server';
+import { ToastContainer } from 'react-toastify';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const queryClient = new QueryClient()
 
 createServer((page) =>
     createInertiaApp({
@@ -16,7 +19,12 @@ createServer((page) =>
                 import.meta.glob('./pages/**/*.tsx'),
             ),
         setup: ({ App, props }) => {
-            return <App {...props} />;
+            return (
+                <QueryClientProvider client={queryClient}>
+                    <App {...props} />
+                    <ToastContainer />
+                </QueryClientProvider>
+            )
         },
     }),
 );
