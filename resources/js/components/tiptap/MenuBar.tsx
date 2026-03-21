@@ -1,176 +1,176 @@
-import { Editor, useEditorState } from "@tiptap/react"
-import MenuButton from "./MenuButton"
+import { ICONS as Icons } from "@/consts/tiptap";
+import { Editor, useEditorState } from "@tiptap/react";
+import AlignOptions from "./MenuBar/AlignOptions";
+import ColorOptions from "./MenuBar/ColorOptions";
+import HistoryButtons from "./MenuBar/HistoryButtons";
+import LinkOptions from "./MenuBar/LinkOptions";
+import ListOptions from "./MenuBar/ListOptions";
+import MediaOptions from "./MenuBar/MediaOptions";
+import MenuButton from "./MenuBar/MenuButton";
+import MenuGroup from "./MenuBar/MenuGroup";
+import MenuSeparator from "./MenuBar/MenuSeparator";
+import SelectBlockType from "./MenuBar/SelectBlockType";
+import TextOptions from "./MenuBar/TextOptions";
+import TableOptions from "./MenuBar/TableOptions";
 
-export default function MenuBar({ editor }: { editor: Editor }) {
-    const editorState = useEditorState({
+type MenuBarProps = {
+    editor: Editor | null;
+}
+
+export type EditorConfig = {
+    isBold: boolean;
+    isItalic: boolean;
+    isStrike: boolean;
+    isUnderline: boolean;
+    isCode: boolean;
+    isLink: boolean;
+    isHighlight: boolean;
+    isParagraph: boolean;
+    isH1: boolean;
+    isH2: boolean;
+    isH3: boolean;
+    isH4: boolean;
+    isBulletList: boolean;
+    isOrderedList: boolean;
+    isTaskList: boolean;
+    isCodeBlock: boolean;
+    isBlockquote: boolean;
+    isAlignLeft: boolean;
+    isAlignCenter: boolean;
+    isAlignRight: boolean;
+    isAlignJustify: boolean;
+    isInTable: boolean;
+    isSuperscript: boolean;
+    isSubscript: boolean;
+    canUndo: boolean;
+    canRedo: boolean;
+    charCount: number;
+    wordCount: number;
+    textColor: string | undefined;
+} | null
+
+export default function MenuBar({ editor }: MenuBarProps) {
+    const config: EditorConfig = useEditorState({
         editor,
         selector: ctx => {
+            if (!ctx.editor) return null;
+            const e = ctx.editor;
             return {
-                isBold: ctx.editor.isActive('bold') ?? false,
-                canBold: ctx.editor.can().chain().toggleBold().run() ?? false,
-                isItalic: ctx.editor.isActive('italic') ?? false,
-                canItalic: ctx.editor.can().chain().toggleItalic().run() ?? false,
-                isStrike: ctx.editor.isActive('strike') ?? false,
-                canStrike: ctx.editor.can().chain().toggleStrike().run() ?? false,
-                isCode: ctx.editor.isActive('code') ?? false,
-                canCode: ctx.editor.can().chain().toggleCode().run() ?? false,
-                canClearMarks: ctx.editor.can().chain().unsetAllMarks().run() ?? false,
-                isParagraph: ctx.editor.isActive('paragraph') ?? false,
-                isLink: ctx.editor.isActive('link') ?? false,
-                canLink: ctx.editor.can().chain().toggleLink().run() ?? false,
-                isHeading1: ctx.editor.isActive('heading', { level: 1 }) ?? false,
-                isHeading2: ctx.editor.isActive('heading', { level: 2 }) ?? false,
-                isHeading3: ctx.editor.isActive('heading', { level: 3 }) ?? false,
-                isHeading4: ctx.editor.isActive('heading', { level: 4 }) ?? false,
-                isHeading5: ctx.editor.isActive('heading', { level: 5 }) ?? false,
-                isHeading6: ctx.editor.isActive('heading', { level: 6 }) ?? false,
-                isBulletList: ctx.editor.isActive('bulletList') ?? false,
-                isOrderedList: ctx.editor.isActive('orderedList') ?? false,
-                isCodeBlock: ctx.editor.isActive('codeBlock') ?? false,
-                isBlockquote: ctx.editor.isActive('blockquote') ?? false,
-                canUndo: ctx.editor.can().chain().undo().run() ?? false,
-                canRedo: ctx.editor.can().chain().redo().run() ?? false,
-            }
+                isBold: e.isActive("bold"),
+                isItalic: e.isActive("italic"),
+                isStrike: e.isActive("strike"),
+                isUnderline: e.isActive("underline"),
+                isCode: e.isActive("code"),
+                isLink: e.isActive("link"),
+                isHighlight: e.isActive("highlight"),
+                isParagraph: e.isActive("paragraph"),
+                isH1: e.isActive("heading", { level: 1 }),
+                isH2: e.isActive("heading", { level: 2 }),
+                isH3: e.isActive("heading", { level: 3 }),
+                isH4: e.isActive("heading", { level: 4 }),
+                isBulletList: e.isActive("bulletList"),
+                isOrderedList: e.isActive("orderedList"),
+                isTaskList: e.isActive("taskList"),
+                isCodeBlock: e.isActive("codeBlock"),
+                isBlockquote: e.isActive("blockquote"),
+                isAlignLeft: e.isActive({ textAlign: "left" }),
+                isAlignCenter: e.isActive({ textAlign: "center" }),
+                isAlignRight: e.isActive({ textAlign: "right" }),
+                isAlignJustify: e.isActive({ textAlign: "justify" }),
+                isInTable: e.isActive("table"),
+                isSuperscript: e.isActive("superscript"),
+                isSubscript: e.isActive("subscript"),
+                canUndo: e.can().chain().undo().run(),
+                canRedo: e.can().chain().redo().run(),
+                charCount: (e.storage.characterCount?.characters?.() as number) ?? 0,
+                wordCount: (e.storage.characterCount?.words?.() as number) ?? 0,
+                textColor: e.getAttributes("textStyle").color as string | undefined,
+            };
         },
-    })
+    });
+
+    if (!editor || !config) {
+        return <div className="p-2 bg-neutral-50 border-b border-neutral-200 h-11 animate-pulse rounded-t" />;
+    }
 
     return (
-        <div className="p-2 bg-neutral-50 flex flex-wrap gap-1 w-full">
-            <MenuButton
-                onClick={() => editor.chain().focus().toggleBold().run()}
-                disabled={!editorState.canBold}
-                isActive={editorState.isBold}
-            >
-                Bold
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().toggleItalic().run()}
-                disabled={!editorState.canItalic}
-                isActive={editorState.isItalic}
-            >
-                Italic
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().toggleStrike().run()}
-                disabled={!editorState.canStrike}
-                isActive={editorState.isStrike}
-            >
-                Strike
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().toggleCode().run()}
-                disabled={!editorState.canCode}
-                isActive={editorState.isCode}
-            >
-                Código
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().unsetAllMarks().run()}
-            >
-                Limpiar estilos
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().clearNodes().run()}
-            >
-                Limpiar todo
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().setParagraph().run()}
-                isActive={editorState.isParagraph}
-            >
-                Párrafo
-            </MenuButton>
-            <MenuButton
-                onClick={() => {
-                    const url = window.prompt('URL del enlace:');
-                    if (url) editor.chain().focus().setLink({ href: url }).run();
-                }}
-                isActive={editorState.isLink}
-                disabled={!editorState.canLink}
-            >
-                Enlace
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-                isActive={editorState.isHeading1}
-            >
-                H1
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-                isActive={editorState.isHeading2}
-            >
-                H2
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-                isActive={editorState.isHeading3}
-            >
-                H3
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-                isActive={editorState.isHeading4}
-            >
-                H4
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-                isActive={editorState.isHeading5}
-            >
-                H5
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-                isActive={editorState.isHeading6}
-            >
-                H6
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().toggleBulletList().run()}
-                isActive={editorState.isBulletList}
-            >
-                Lista desordenada
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                isActive={editorState.isOrderedList}
-            >
-                Lista ordenada
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-                isActive={editorState.isCodeBlock}
-            >
-                Bloque de Código
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().toggleBlockquote().run()}
-                isActive={editorState.isBlockquote}
-            >
-                Cita
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().setHorizontalRule().run()}
-            >
-                Linea horizontal
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().setHardBreak().run()}
-            >
-                Salto de linea
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().undo().run()} disabled={!editorState.canUndo}
-            >
-                Deshacer
-            </MenuButton>
-            <MenuButton
-                onClick={() => editor.chain().focus().redo().run()}
-                disabled={!editorState.canRedo}
-            >
-                Rehacer
-            </MenuButton>
+        <div className="bg-neutral-50 border-b border-neutral-200 rounded-t select-none">
+            <div className="p-1.5 flex flex-wrap gap-1 items-center">
+                <HistoryButtons
+                    editor={editor}
+                    config={config}
+                />
+
+                <MenuSeparator />
+
+                <SelectBlockType
+                    editor={editor}
+                    config={config}
+                />
+
+                <MenuSeparator />
+
+                <TextOptions
+                    editor={editor}
+                    config={config}
+                />
+
+                <MenuSeparator />
+
+                <ColorOptions
+                    editor={editor}
+                    config={config}
+                />
+
+                <MenuSeparator />
+
+                <AlignOptions
+                    editor={editor}
+                    config={config}
+                />
+
+                <MenuSeparator />
+
+                <ListOptions
+                    editor={editor}
+                    config={config}
+                />
+
+                <MenuSeparator />
+
+                <LinkOptions
+                    editor={editor}
+                    config={config}
+                />
+
+                <MenuSeparator />
+
+                <MediaOptions
+                    editor={editor}
+                    config={config}
+                />
+
+                <MenuSeparator />
+
+                <TableOptions
+                    editor={editor}
+                    config={config}
+                />
+
+                <MenuSeparator />
+
+                <MenuGroup label="Misc">
+                    <MenuButton onClick={() => editor.chain().focus().toggleBlockquote().run()} isActive={config.isBlockquote} tooltip="Cita"><Icons.Quote /></MenuButton>
+                    <MenuButton onClick={() => editor.chain().focus().toggleCodeBlock().run()} isActive={config.isCodeBlock} tooltip="Bloque de código"><Icons.CodeBlock /></MenuButton>
+                    <MenuButton onClick={() => editor.chain().focus().setHorizontalRule().run()} tooltip="Línea horizontal"><Icons.HRule /></MenuButton>
+                </MenuGroup>
+            </div>
+
+            <div className="px-2 pb-1.5 flex items-center gap-3 text-xs text-inn-700 border-t border-neutral-100">
+                <span>{config.charCount.toLocaleString("es-MX")} caracteres</span>
+                <span>·</span>
+                <span>{config.wordCount.toLocaleString("es-MX")} palabras</span>
+            </div>
         </div>
-    )
+    );
 }

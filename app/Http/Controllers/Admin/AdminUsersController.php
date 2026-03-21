@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Resources\UserCollection;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -33,7 +34,7 @@ class AdminUsersController extends Controller
         $roles = Role::all();
 
         return Inertia::render('admin/users', [
-            'users' => $users,
+            'users' => new UserCollection($users),
             'roles' => $roles,
             'page' => $page,
             'search' => $search,

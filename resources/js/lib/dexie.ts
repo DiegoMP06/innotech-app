@@ -1,6 +1,6 @@
-import { Content } from '@measured/puck';
+import { Content } from '@puckeditor/core';
 import Dexie, { Table } from 'dexie';
-import { ComponentProps } from './puck';
+import { type ComponentProps } from './puck';
 
 export type TableContent = {
     id: string;

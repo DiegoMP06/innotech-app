@@ -7,7 +7,7 @@ import { Control, Controller, FieldErrors } from 'react-hook-form';
 import DropzoneInput from '@/components/dropzone/DropzoneInput';
 
 export type ImageFormData = {
-    image: File[];
+    images: File[];
 };
 
 type NewImageModalProps = {
@@ -17,6 +17,9 @@ type NewImageModalProps = {
     onSubmit: FormEventHandler<HTMLFormElement>;
     control: Control<ImageFormData>
     errors: FieldErrors<ImageFormData>
+    multipleFiles?: boolean;
+    title?: string;
+    description?: string;
 }
 
 export default function NewImageModal({
@@ -25,15 +28,18 @@ export default function NewImageModal({
     processing,
     onSubmit,
     control,
-    errors
+    errors,
+    multipleFiles,
+    title = 'Nueva imagen',
+    description = 'Agrega una nueva imagen a la publicación.',
 }: NewImageModalProps) {
     return (
         <Dialog open={isModalActive} onOpenChange={setIsModalActive}>
             <DialogContent className="sm:max-w-xl">
                 <DialogHeader>
-                    <DialogTitle>Nueva imagen</DialogTitle>
+                    <DialogTitle>{title}</DialogTitle>
                     <DialogDescription>
-                        Agrega una nueva imagen a la publicación.
+                        {description}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -42,10 +48,10 @@ export default function NewImageModal({
                     className="grid grid-cols-1 gap-6"
                 >
                     <div className="grid gap-2">
-                        <Label htmlFor="image">Imágenes: </Label>
+                        <Label htmlFor="images">{multipleFiles ? 'Imágenes' : 'Imagen'}: </Label>
 
                         <Controller
-                            name="image"
+                            name="images"
                             control={control}
                             rules={{
                                 validate: (value) =>
@@ -56,11 +62,12 @@ export default function NewImageModal({
                                 <DropzoneInput
                                     value={value}
                                     onChange={onChange}
+                                    multipleFiles={multipleFiles}
                                 />
                             )}
                         />
 
-                        <InputError message={errors.image?.message} />
+                        <InputError message={errors.images?.message} />
                     </div>
 
                     <DialogFooter>

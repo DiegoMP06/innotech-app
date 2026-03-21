@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Blog\Post;
+use App\Models\Events\Event;
+use App\Models\Projects\Project;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

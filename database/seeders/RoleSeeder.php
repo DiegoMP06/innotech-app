@@ -14,26 +14,32 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Permission::create(['name' => 'events']);
-        Permission::create(['name' => 'posts']);
-        Permission::create(['name' => 'projects']);
-        Permission::create(['name' => 'users']);
+        // Permisos por módulo
+        $permissions = [
+            'posts',      // Blog
+            'projects',   // Projects
+            'events',     // Events
+            'classroom',  // Classroom (cursos, lecciones, tareas)
+            'forms',      // Forms (crear/editar formularios)
+            'payments',   // Payments (validar pagos)
+        ];
 
-        Role::create(['name' => 'guest']);
+        foreach ($permissions as $perm) {
+            Permission::firstOrCreate(['name' => $perm, 'guard_name' => 'web']);
+        }
 
-        $student = Role::create(['name' => 'student']);
-        $student->givePermissionTo('projects');
+        // Roles y sus permisos
+        $roles = [
+            'guest' => [],
+            'student' => ['projects', 'classroom', 'forms'],
+            'teacher' => ['posts', 'projects', 'classroom', 'forms'],
+            'member' => ['posts', 'events', 'projects', 'classroom', 'forms'],
+            'admin' => $permissions,
+        ];
 
-        $teacher = Role::create(['name' => 'teacher']);
-        $teacher->givePermissionTo('posts');
-        $teacher->givePermissionTo('projects');
-
-        $member = Role::create(['name' => 'member']);
-        $member->givePermissionTo('posts');
-        $member->givePermissionTo('events');
-        $member->givePermissionTo('projects');
-
-        $admin = Role::create(['name' => 'admin']);
-        $admin->givePermissionTo(Permission::all());
+        foreach ($roles as $roleName => $rolePerms) {
+            $role = Role::firstOrCreate(['name' => $roleName, 'guard_name' => 'web']);
+            $role->syncPermissions($rolePerms);
+        }
     }
 }

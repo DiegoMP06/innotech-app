@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Events\Event;
+use App\Models\Events\EventActivity;
+use App\Models\Events\EventStatus;
 use Carbon\Carbon;
-use App\Models\Event;
-use App\Models\EventActivity;
-use App\Models\EventStatus;
 use Illuminate\Console\Command;
 
 class UpdateEventStatuses extends Command

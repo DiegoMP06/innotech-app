@@ -2,12 +2,13 @@
 
 namespace App\Providers;
 
-use App\Models\Post;
-use App\Models\Project;
 use App\Events\MediaProcessed;
+use App\Models\Blog\Post;
+use App\Models\Projects\Project;
+use App\Models\Events\Event as EventModel;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\MediaLibrary\Conversions\Events\ConversionHasBeenCompletedEvent;
 
 class AppServiceProvider extends ServiceProvider
@@ -38,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
                 broadcast(new MediaProcessed($media->model_id, 'project'));
             }
 
-            if ($media->model_type === Event::class) {
+            if ($media->model_type === EventModel::class) {
                 broadcast(new MediaProcessed($media->model_id, 'event'));
             }
         });

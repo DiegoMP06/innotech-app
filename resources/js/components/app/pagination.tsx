@@ -1,7 +1,6 @@
 import { PaginationType } from "@/types"
-import { router } from "@inertiajs/react"
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
-import { Button } from "../ui/button"
+import { PaginationContent, PaginationItem, PaginationLink, Pagination as PaginationUI } from "../ui/pagination"
 
 type PaginationProps = {
     pagination: PaginationType
@@ -9,49 +8,61 @@ type PaginationProps = {
 }
 
 export default function Pagination({ pagination, queryParams }: PaginationProps) {
-    const pages = Array.from({ length: pagination.last_page }, (_, i) => i + 1)
+    const pages = Array.from({ length: pagination.meta.last_page }, (_, i) => i + 1)
 
-    const handleChangePage = (page: number) => {
+    const getUrl = (page: number) => {
         const queryString = Object.entries({ ...queryParams, page })
-            .map(([key, value]) => `${key}=${value}`)
+            .map(([key, value]) => `filter[${key}]=${value}`)
             .join('&');
 
-        router.visit(`?${queryString}`, {
-            preserveScroll: true,
-        })
+        return `?${queryString}`
     }
 
-    const isLastPage = pagination.current_page === pagination.last_page
-    const isFirstPage = pagination.current_page === 1
-    const isCurrentPage = (page: number) => page === pagination.current_page
+    const isLastPage = pagination.meta.current_page === pagination.meta.last_page
+    const isFirstPage = pagination.meta.current_page === 1
+    const isCurrentPage = (page: number) => page === pagination.meta.current_page
 
-    return pagination.last_page > 1 ? (
-        <div className="flex flex-col md:flex-row gap-4 items-center mt-10 justify-between">
-            <p className="">
-                Pagina {pagination.current_page} de {pagination.last_page} - {pagination.per_page} por página
+    return pagination.meta.last_page > 1 ? (
+        <div className="flex flex-col md:flex-row gap-4 items-center mt-16 justify-between">
+            <p className="text-xs text-accent-foreground font-bold flex-1">
+                Pagina {pagination.meta.current_page} de {pagination.meta.last_page} - {pagination.meta.per_page} por página
             </p>
 
-            <nav className="flex gap-2">
-                <Button variant="secondary" onClick={() => handleChangePage(1)} disabled={isFirstPage}>
-                    <ChevronsLeft />
-                </Button>
-                <Button variant="secondary" onClick={() => handleChangePage(pagination.current_page - 1)} disabled={isFirstPage}>
-                    <ChevronLeft />
-                </Button>
+            <PaginationUI className="mx-0 md:mx-auto flex-0">
+                <PaginationContent>
+                    <PaginationItem>
+                        <PaginationLink only={['posts']} href={getUrl(1)} isActive={isFirstPage}>
+                            <ChevronsLeft />
+                        </PaginationLink>
+                    </PaginationItem>
 
-                {pages.map((page) => (
-                    <Button variant="secondary" className="hidden md:block" key={page} onClick={() => handleChangePage(page)} disabled={isCurrentPage(page)}>
-                        {page}
-                    </Button>
-                ))}
+                    <PaginationItem>
+                        <PaginationLink only={['posts']} href={getUrl(pagination.meta.current_page - 1)} isActive={isFirstPage}>
+                            <ChevronLeft />
+                        </PaginationLink>
+                    </PaginationItem>
 
-                <Button variant="secondary" onClick={() => handleChangePage(pagination.current_page + 1)} disabled={isLastPage}>
-                    <ChevronRight />
-                </Button>
-                <Button variant="secondary" onClick={() => handleChangePage(pagination.last_page)} disabled={isLastPage}>
-                    <ChevronsRight />
-                </Button>
-            </nav>
+                    {pages.map((page) => (
+                        <PaginationItem key={page} className="hidden md:block">
+                            <PaginationLink only={['posts']} href={getUrl(page)} isActive={isCurrentPage(page)}>
+                                {page}
+                            </PaginationLink>
+                        </PaginationItem>
+                    ))}
+
+                    <PaginationItem>
+                        <PaginationLink only={['posts']} href={getUrl(pagination.meta.current_page + 1)} isActive={isLastPage}>
+                            <ChevronRight />
+                        </PaginationLink>
+                    </PaginationItem>
+
+                    <PaginationItem>
+                        <PaginationLink only={['posts']} href={getUrl(pagination.meta.last_page)} isActive={isLastPage}>
+                            <ChevronsRight />
+                        </PaginationLink>
+                    </PaginationItem>
+                </PaginationContent>
+            </PaginationUI>
         </div>
     ) : null;
 }

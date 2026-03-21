@@ -1,20 +1,13 @@
-import { ComponentProps } from '@/lib/puck';
+import { ROLES } from '@/consts/roles';
 import { InertiaLinkProps } from '@inertiajs/react';
-import { Content } from '@measured/puck';
-import { LatLng } from 'leaflet';
 import { LucideIcon } from 'lucide-react';
 
-export enum RoleEnum {
-    Guest = 'guest',
-    Student = 'student',
-    Teacher = 'teacher',
-    Member = 'member',
-    Admin = 'admin',
-}
+export type Roles = keyof typeof ROLES
+export type RolesValues = typeof ROLES[Roles]
 
 export type Role = {
     id: number;
-    name: string;
+    name: Roles;
     guard_name: string;
     created_at: string;
     updated_at: string;
@@ -49,7 +42,9 @@ export interface SharedData {
     [key: string]: unknown;
 }
 
-export type PivotType<T = unknown> = T & { pivot: { id: number } };
+export type PivotType<T = unknown, P = unknown> = T & {
+    pivot: { id: number } & P;
+};
 
 export type DropzoneFile = File & {
     preview: string;
@@ -120,18 +115,16 @@ type LinkPagination = {
 };
 
 export type PaginationType<T = unknown> = {
-    current_page: number;
-    first_page_url: string;
-    from: number;
-    last_page: number;
-    last_page_url: string;
-    links: LinkPagination[];
-    next_page_url: null | string;
-    path: string;
-    per_page: number;
-    prev_page_url: null | string;
-    to: number;
-    total: number;
+    meta: {
+        current_page: number;
+        from: number;
+        last_page: number;
+        links: LinkPagination[];
+        path: string;
+        per_page: number;
+        to: number;
+        total: number;
+    };
     data: T[];
 };
 
@@ -157,147 +150,8 @@ export type Media = {
     };
     dimensions: {
         [key: string]: ImageDimensions;
-    }
+    };
     responsive: ResponsiveImages;
     is_processed: boolean;
     custom_properties: string[];
-};
-
-export type PostType = {
-    id: number;
-    name: string;
-    slug: string;
-};
-
-export type PostCategory = {
-    id: number;
-    name: string;
-    slug: string;
-};
-
-export type Post = {
-    id: number;
-    name: string;
-    slug: string;
-    summary: string;
-    content: Content<ComponentProps>;
-    is_feaured: boolean;
-    is_published: boolean;
-    published_at: null | string;
-    post_type_id: number;
-    user_id: number;
-    created_at: string;
-    updated_at: string;
-    categories: PivotType<PostCategory>[];
-    type: PostType;
-    author: UserData;
-    media: Media[];
-};
-
-export type PostFormData = Pick<Post, 'name' | 'summary' | 'post_type_id'> & {
-    images?: File[];
-    categories?: number[];
-};
-
-export type Project = {
-    id: number;
-    name: string;
-    slug: string;
-    summary: string;
-    content: Content<ComponentProps>;
-    repository_url: string;
-    demo_url: string;
-    tech_stack: string[];
-    version: string;
-    license: string;
-    is_featured: boolean;
-    is_published: boolean;
-    published_at: string | null;
-    user_id: number;
-    created_at: string;
-    updated_at: string;
-    media: Media[];
-    collaborators: PivotType<UserData>[];
-    author: UserData;
-};
-
-export type ProjectFormData = Pick<
-    Project,
-    | 'name'
-    | 'summary'
-    | 'repository_url'
-    | 'demo_url'
-    | 'tech_stack'
-    | 'version'
-    | 'license'
-> & {
-    images?: File[];
-};
-
-export type EventActivity = {
-    id: number;
-    name: string;
-    slug: string;
-    image: string | null;
-    summary: string;
-    content: Content<ComponentProps>;
-    location: string;
-    lat: string;
-    lng: string;
-    is_online: boolean;
-    online_link: string | null;
-    is_a_team_event: boolean;
-    min_team_size: number | null;
-    max_team_size: number | null;
-    is_a_full_team_event: boolean;
-    max_participants: number | null;
-    only_students: boolean;
-    is_competition: boolean;
-    participants_per_round: number | null;
-    is_published: boolean;
-    published_at: string | null;
-    started_at: string;
-    ended_at: string;
-    event_id: number;
-    event_activity_type_id: number;
-    created_at: string;
-    updated_at: string;
-};
-
-export type Event = {
-    id: number;
-    name: string;
-    slug: string;
-    summary: string;
-    content: Content<ComponentProps>;
-    is_free: boolean;
-    price: number;
-    percent_off: number;
-    location: string;
-    lat: string;
-    lng: string;
-    registration_started_at: string;
-    registration_ended_at: string;
-    start_date: string;
-    end_date: string;
-    is_published: boolean;
-    user_id: number;
-    created_at: string;
-    updated_at: string;
-    activities: EventActivity[];
-    author: UserData;
-    event_status_id: 1;
-    media: Media[];
-};
-
-export type EventFormData = Pick<
-    Event,
-    'name' | 'summary' | 'is_free' | 'location' | 'price' | 'percent_off'
-> & {
-    logo: File[];
-    latLng: LatLng;
-    registration_started_at: Date;
-    registration_ended_at: Date;
-    start_date: Date;
-    end_date: Date;
 };

@@ -15,7 +15,7 @@ import events from '@/routes/events';
 import posts from '@/routes/posts';
 import projects from '@/routes/projects';
 import users from '@/routes/admin/users';
-import { RoleEnum, SharedData, type NavItem } from '@/types';
+import { SharedData, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { CalendarDays, FileCode, Folder, LayoutGrid, NotebookPen, Users2 } from 'lucide-react';
 import { useMemo } from 'react';
@@ -73,19 +73,19 @@ export function AppSidebar() {
     const { auth } = usePage<SharedData>().props;
 
     const mainNavItems = useMemo(() => {
-        if (auth.user.roles.some((role) => role.name === RoleEnum.Admin)) {
+        if (auth.user.roles.some((role) => role.name === 'admin')) {
             return [...defaultNavItems, ...studentNavItems, ...teacherNavItems, ...memberNavItems, ...adminNavItems]
         }
 
-        if (auth.user.roles.some((role) => role.name === RoleEnum.Member)) {
+        if (auth.user.roles.some((role) => role.name === 'member')) {
             return [...defaultNavItems, ...studentNavItems, ...teacherNavItems, ...memberNavItems]
         }
 
-        if (auth.user.roles.some((role) => role.name === RoleEnum.Teacher)) {
+        if (auth.user.roles.some((role) => role.name === 'teacher')) {
             return [...defaultNavItems, ...studentNavItems, ...teacherNavItems]
         }
 
-        if (auth.user.roles.some((role) => role.name === RoleEnum.Student)) {
+        if (auth.user.roles.some((role) => role.name === 'student')) {
             return [...defaultNavItems, ...studentNavItems]
         }
 

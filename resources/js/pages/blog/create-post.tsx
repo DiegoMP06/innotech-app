@@ -1,0 +1,113 @@
+import InputError from "@/components/app/input-error"
+import PostForm from "@/components/blog/PostForm"
+import DropzoneInput from "@/components/dropzone/DropzoneInput"
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import AppLayout from "@/layouts/app-layout"
+import posts from "@/routes/posts"
+import { BreadcrumbItem } from "@/types"
+import { PostCategory, PostFormData, PostType } from "@/types/blog"
+import { Head, router } from "@inertiajs/react"
+import { ChevronLeft } from "lucide-react"
+import { useState } from "react"
+import { Controller, SubmitHandler, useForm } from "react-hook-form"
+import { toast } from "react-toastify"
+
+type CreatePostProps = {
+    types: PostType[]
+    categories: PostCategory[]
+}
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Blog',
+        href: posts.index().url,
+    },
+    {
+        title: 'Crear Post',
+        href: posts.create().url,
+    }
+]
+
+export default function CreatePost({ types, categories }: CreatePostProps) {
+    const [processing, setProcessing] = useState(false);
+
+    const initialValues: PostFormData = {
+        name: '',
+        summary: '',
+        images: [],
+        post_type_id: 1,
+        categories: [],
+    }
+
+    const { control, register, formState: { errors }, handleSubmit } = useForm({
+        defaultValues: initialValues
+    });
+
+    const handleCreatePost: SubmitHandler<PostFormData> = (data) => {
+        router.post(posts.store(), data, {
+            preserveScroll: true,
+            showProgress: true,
+            forceFormData: true,
+            onSuccess: (data) => {
+                toast.success(data.props.message as string)
+            },
+            onFinish: () => setProcessing(false),
+            onError: (error) => {
+                Object.values(error).forEach(value =>
+                    toast.error(value))
+            }
+        })
+    }
+
+    return (
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="Crear Proyecto" />
+
+            <div className="mb-15">
+                <Button onClick={() => router.visit(posts.index())}>
+                    <ChevronLeft />
+                    Volver
+                </Button>
+            </div>
+
+            <form
+                className="grid grid-cols-1 gap-6 max-w-2xl mx-auto w-full"
+                onSubmit={handleSubmit(handleCreatePost)}
+            >
+                <PostForm
+                    control={control}
+                    errors={errors}
+                    register={register}
+                    types={types}
+                    categories={categories}
+                />                
+
+                <div className="grid gap-2">
+                    <Label htmlFor="images">Imágenes: </Label>
+
+                    <Controller
+                        name="images"
+                        control={control}
+                        rules={{
+                            validate: (value) => (value!.length > 0) || 'Debe seleccionar al menos una imagen',
+                        }}
+                        render={({ field: { value, onChange } }) => (
+                            <DropzoneInput
+                                value={value || []}
+                                onChange={onChange}
+                                multipleFiles
+                            />
+                        )}
+                    />
+
+                    <InputError message={errors.images?.message} />
+                </div>
+
+                <Button type="submit" disabled={processing}>
+                    Crear Post
+                </Button>
+            </form>
+        </AppLayout>
+    )
+}

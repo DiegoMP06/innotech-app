@@ -1,199 +1,143 @@
-import BlogImage from '@/components/puck/BlogImage';
-import CodeBlock from '@/components/puck/CodeBlock';
-import ExternalLink from '@/components/puck/ExternalLink';
-import GridContainer from '@/components/puck/GridContainer';
-import Heading from '@/components/puck/Heading';
-import Paragraph from '@/components/puck/Paragraph';
-import Quote from '@/components/puck/Quote';
-import TipTapEditor from '@/components/tiptap/TipTapEditor';
-import TipTapEditorContainer from '@/components/tiptap/TipTapEditorContainer';
-import { Config, Slot } from '@measured/puck';
+import type { Config } from '@puckeditor/core';
 
+import Accordion, { AccordionConfig } from '@/components/puck/Accordion';
+import BlogImage, { BlogImageConfig } from '@/components/puck/BlogImage';
+import ButtonLink, { ButtonLinkConfig } from '@/components/puck/ButtonLink';
+import CalloutBox, { CalloutBoxConfig } from '@/components/puck/CalloutBox';
+import CodeBlock, { CodeBlockConfig } from '@/components/puck/CodeBlock';
+import Divider, { DividerConfig } from '@/components/puck/Divider';
+import Gallery, { GalleryConfig } from '@/components/puck/Gallery';
+import GridContainer, {
+    GridContainerConfig,
+} from '@/components/puck/GridContainer';
+import Heading, { HeadingConfig } from '@/components/puck/Heading';
+import Paragraph, { ParagraphConfig } from '@/components/puck/Paragraph';
+import Quote, { QuoteConfig } from '@/components/puck/Quote';
+import RichTextBlock, {
+    RichTextBlockConfig,
+} from '@/components/puck/RichTextBlock';
+import StatsGrid, { StatsGridConfig } from '@/components/puck/StatsGrid';
+import Timeline, { TimelineConfig } from '@/components/puck/Timeline';
+import VideoEmbed, { VideoEmbedConfig } from '@/components/puck/VideoEmbed';
 
 export type ComponentProps = {
-    Heading: { title: string; level: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' };
-    Paragraph: { text: string };
-    Quote: { text: string; author?: string };
-    ExternalLink: { label: string; url: string };
-    BlogImage: { url: string; alt?: string };
-    CodeBlock: { code: string, lang: string };
-    CustomContent: { content: string };
-    GridContainer: { direction: 'row' | 'column'; items: { content: Slot }[]; gap: number };
+    Heading: React.ComponentProps<typeof Heading>
+    Paragraph: React.ComponentProps<typeof Paragraph>
+    Quote: React.ComponentProps<typeof Quote>
+    BlogImage: React.ComponentProps<typeof BlogImage>
+    CodeBlock: React.ComponentProps<typeof CodeBlock>
+    VideoEmbed: React.ComponentProps<typeof VideoEmbed>
+    GridContainer: React.ComponentProps<typeof GridContainer>
+    Divider: React.ComponentProps<typeof Divider>
+    CalloutBox: React.ComponentProps<typeof CalloutBox>
+    ButtonLink: React.ComponentProps<typeof ButtonLink>
+    RichTextBlock: React.ComponentProps<typeof RichTextBlock>
+    Gallery: React.ComponentProps<typeof Gallery>
+    Accordion: React.ComponentProps<typeof Accordion>
+    StatsGrid: React.ComponentProps<typeof StatsGrid>
+    Timeline: React.ComponentProps<typeof Timeline>;
+}
+
+const allComponents: Config['components'] = {
+    Heading: HeadingConfig,
+    Paragraph: ParagraphConfig,
+    Quote: QuoteConfig,
+    BlogImage: BlogImageConfig,
+    CodeBlock: CodeBlockConfig,
+    VideoEmbed: VideoEmbedConfig,
+    GridContainer: GridContainerConfig,
+    Divider: DividerConfig,
+    CalloutBox: CalloutBoxConfig,
+    ButtonLink: ButtonLinkConfig,
+    RichTextBlock: RichTextBlockConfig,
+    Gallery: GalleryConfig,
+    Accordion: AccordionConfig,
+    StatsGrid: StatsGridConfig,
+    Timeline: TimelineConfig,
 };
 
-export const puckConfig: Config<ComponentProps> = {
-    root: {
-        fields: {},
-        render: ({ children }) => (
-            <div className="bg-background w-full h-full">
-                <article className="max-w-4xl mx-auto px-4 py-10">
-                    {children}
-                </article>
-            </div>
-        ),
-    },
-    components: {
-        Heading: {
-            label: 'Encabezado',
-            fields: {
-                title: {
-                    type: "text",
-                    label: "Texto del Encabezado",
-                    placeholder: "Escribe aquí el texto del encabezado..."
-                },
-                level: {
-                    label: "Nivel",
-                    type: "select",
-                    options: [
-                        { label: "H1", value: "h1" },
-                        { label: "H2", value: "h2" },
-                        { label: "H3", value: "h3" },
-                        { label: "H4", value: "h4" },
-                        { label: "H5", value: "h5" },
-                        { label: "H6", value: "h6" },
-                    ],
-                },
-            },
-            defaultProps: { title: "Encabezado", level: "h2" },
-            render: ({ title, level: Tag }) => (
-                <Heading Tag={Tag}>
-                    {title}
-                </Heading>
-            ),
-        },
-        Paragraph: {
-            label: 'Párrafo',
-            fields: {
-                text: {
-                    type: "textarea",
-                    label: "Contenido",
-                    placeholder: 'Escribe aquí el contenido de tu párrafo...'
-                },
-            },
-            defaultProps: { text: "Párrafo" },
-            render: ({ text }) => (
-                <Paragraph>
-                    {text}
-                </Paragraph>
-            ),
-        },
-        Quote: {
-            label: 'Cita',
-            fields: {
-                text: { type: "textarea", label: "Cita", placeholder: 'Escribe aquí tu cita...' },
-                author: { type: "text", label: "Autor/Fuente (Opcional)", placeholder: 'Escribe aquí el autor/fuente...' },
-            },
-            defaultProps: { text: "Cita" },
-            render: ({ text, author }) => (
-                <Quote author={author}>
-                    {text}
-                </Quote>
-            ),
-        },
-        ExternalLink: {
-            label: 'Enlace externo',
-            fields: {
-                label: { type: "text", label: "Texto del enlace", placeholder: 'Escribe aquí el texto del enlace...' },
-                url: { type: "text", label: "URL (https://...)", placeholder: 'Escribe aquí la URL del enlace...' },
-            },
-            defaultProps: { label: "Enlace externo", url: "https://example.com" },
-            render: ({ label, url }) => (
-                <ExternalLink
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    {label || url}
-                </ExternalLink>
-            ),
-        },
-        BlogImage: {
-            label: 'Imagen Externa',
-            fields: {
-                url: { type: "text", label: "URL de la imagen", placeholder: 'Escribe aquí la URL de la imagen...' },
-                alt: { type: "text", label: "Texto alternativo", placeholder: 'Escribe aquí el texto alternativo...' },
-            },
-            defaultProps: { url: "https://example.com/image.jpg", alt: "Imagen de ejemplo" },
-            render: ({ url, alt }) => (
-                <BlogImage
-                    url={url}
-                    alt={alt}
-                />
-            ),
-        },
-        CodeBlock: {
-            label: 'Bloque de Código',
-            fields: {
-                code: { type: "textarea", label: "Código", placeholder: 'Escribe aquí tu código...' },
-                lang: { type: 'text', label: 'Lenguaje de programación', placeholder: 'Escribe aquí el lenguaje de programación...' },
-            },
-            defaultProps: { code: "console.log('Hello, world!')", lang: 'JS' },
-            render: ({ code, lang }) => (
-                <CodeBlock lang={lang}>
-                    {code}
-                </CodeBlock>
-            ),
-        },
-        CustomContent: {
-            label: 'Contenido personalizado',
-            fields: {
-                content: {
-                    type: 'custom',
-                    render: ({ value, onChange }) => (
-                        <TipTapEditor
-                            value={value}
-                            onChange={onChange}
-                        />
-                    )
-                }
-            },
-            render: ({ content }) => (
-                <TipTapEditorContainer
-                    dangerouslySetInnerHTML={{ __html: content }}
-                />
-            )
-        },
-        GridContainer: {
-            label: 'Contenedor de elementos',
-            fields: {
-                direction: {
-                    type: "select",
-                    options: [
-                        { label: "Horizontal", value: "row" },
-                        { label: "Vertical", value: "column" },
-                    ]
-                },
-                items: {
-                    type: "array",
-                    max: 20,
-                    getItemSummary: (item, i) => `Elemento ${(Number(i)) + 1}`,
-                    arrayFields: {
-                        content: { type: "slot" },
-                    },
-                    defaultItemProps: {
-                        content: [],
-                    },
-                },
-                gap: {
-                    min: 0,
-                    type: "number",
-                    label: "Espaciado",
-                    placeholder: 'Escribe aquí el espaciado...',
-                },
-            },
-            defaultProps: {
-                direction: "column",
-                gap: 0,
-                items: [],
-            },
-            render: ({ items, gap, direction }) => (
-                <GridContainer
-                    items={items}
-                    gap={gap}
-                    direction={direction}
-                />
-            ),
-        },
+const rootConfig: Config['root'] = {
+    fields: {},
+    render: ({ children }: { children: React.ReactNode }) => (
+        <div className="bg-background w-full h-full">
+            <article className="max-w-4xl mx-auto px-4 py-10">
+                {children}
+            </article>
+        </div>
+    ),
+}
 
+export const puckConfig: Config = {
+    root: rootConfig,
+    components: allComponents,
+};
+
+export const blogPuckConfig: Config = {
+    root: rootConfig,
+    components: {
+        Heading: HeadingConfig,
+        Paragraph: ParagraphConfig,
+        RichTextBlock: RichTextBlockConfig,
+        Quote: QuoteConfig,
+        BlogImage: BlogImageConfig,
+        VideoEmbed: VideoEmbedConfig,
+        CodeBlock: CodeBlockConfig,
+        CalloutBox: CalloutBoxConfig,
+        Divider: DividerConfig,
+        ButtonLink: ButtonLinkConfig,
+        GridContainer: GridContainerConfig,
+    },
+};
+
+export const projectPuckConfig: Config = {
+    root: rootConfig,
+    components: {
+        Heading: HeadingConfig,
+        Paragraph: ParagraphConfig,
+        RichTextBlock: RichTextBlockConfig,
+        Gallery: GalleryConfig,
+        VideoEmbed: VideoEmbedConfig,
+        CodeBlock: CodeBlockConfig,
+        StatsGrid: StatsGridConfig,
+        Timeline: TimelineConfig,
+        CalloutBox: CalloutBoxConfig,
+        ButtonLink: ButtonLinkConfig,
+        Divider: DividerConfig,
+        GridContainer: GridContainerConfig,
+    },
+};
+
+export const eventPuckConfig: Config = {
+    root: rootConfig,
+    components: {
+        Heading: HeadingConfig,
+        Paragraph: ParagraphConfig,
+        RichTextBlock: RichTextBlockConfig,
+        Timeline: TimelineConfig,
+        StatsGrid: StatsGridConfig,
+        Accordion: AccordionConfig,
+        Gallery: GalleryConfig,
+        VideoEmbed: VideoEmbedConfig,
+        CalloutBox: CalloutBoxConfig,
+        ButtonLink: ButtonLinkConfig,
+        Divider: DividerConfig,
+        GridContainer: GridContainerConfig,
+    },
+};
+
+export const classroomPuckConfig: Config = {
+    root: rootConfig,
+    components: {
+        Heading: HeadingConfig,
+        Paragraph: ParagraphConfig,
+        RichTextBlock: RichTextBlockConfig,
+        VideoEmbed: VideoEmbedConfig,
+        CodeBlock: CodeBlockConfig,
+        Accordion: AccordionConfig,
+        CalloutBox: CalloutBoxConfig,
+        BlogImage: BlogImageConfig,
+        ButtonLink: ButtonLinkConfig,
+        Divider: DividerConfig,
+        GridContainer: GridContainerConfig,
     },
 };

@@ -1,6 +1,6 @@
 import { db, TableContent } from '@/lib/dexie';
 import { ComponentProps } from '@/lib/puck';
-import { Content, Data } from '@measured/puck';
+import { Content, Data } from '@puckeditor/core';
 import { useEffect, useMemo, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useDebouncedCallback } from 'use-debounce';

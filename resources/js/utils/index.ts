@@ -43,6 +43,7 @@ export const formatCurrency = (currency: number) => {
     }).format(currency);
 };
 
-export const getIdealResponsiveMediaLink = (media: Media, size: keyof ResponsiveImages = 'xs') => {
+export const getIdealResponsiveMediaLink = (media?: Media, size: keyof ResponsiveImages = 'xs') => {
+    if (!media) return '';
     return media.responsive[size] || Object.values(media.responsive).find((item) => item !== null) || media.urls.original
 };
